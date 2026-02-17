@@ -24,6 +24,7 @@ import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.zip.ZipEntry;
@@ -62,7 +63,7 @@ public class MavenBootstrapper {
             }
         }
 
-        Path bin = Path.of("apache-maven-" + version, "bin");
+        Path bin = Paths.get("apache-maven-" + version, "bin");
         if (!Files.exists(bin)) {
             try {
                 downloadMvn(version);
@@ -149,7 +150,7 @@ public class MavenBootstrapper {
 
         File zipFile = new File("mvn.zip").getAbsoluteFile();
         InputStream zipFileStream = new FileInputStream(zipFile);
-        Path parent = Path.of(zipFile.getParent());
+        Path parent = Paths.get(zipFile.getParent());
         ZipInputStream zipInputStream = new ZipInputStream(zipFileStream);
 
         ZipEntry entry = zipInputStream.getNextEntry();
