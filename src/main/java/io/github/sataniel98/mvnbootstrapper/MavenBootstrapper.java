@@ -39,12 +39,12 @@ public class MavenBootstrapper {
         String version = null;
         String goal = "package";
         for (int i = 0; i < args.length; i++) {
-            if (args[i].equalsIgnoreCase("--version") || args[i].equalsIgnoreCase("--v")) {
+            if (args[i].equalsIgnoreCase("--version") || args[i].equalsIgnoreCase("-v")) {
                 if (args.length > i + 1) {
                     version = args[i + 1];
                 }
 
-            } else if (args[i].equalsIgnoreCase("--goal") || args[i].equalsIgnoreCase("--g")) {
+            } else if (args[i].equalsIgnoreCase("--goal") || args[i].equalsIgnoreCase("-g")) {
                 if (args.length <= i + 1) {
                     continue;
                 }
