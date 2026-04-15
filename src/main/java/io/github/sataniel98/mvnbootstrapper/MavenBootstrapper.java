@@ -38,6 +38,7 @@ public class MavenBootstrapper {
     public static void main(String[] args) throws IOException {
         String version = null;
         String goal = "package";
+        Path dir = Paths.get("").toAbsolutePath();
         for (int i = 0; i < args.length; i++) {
             if (args[i].equalsIgnoreCase("--version") || args[i].equalsIgnoreCase("-v")) {
                 if (args.length > i + 1) {
@@ -50,6 +51,11 @@ public class MavenBootstrapper {
                 }
                 if (args[i + 1].equalsIgnoreCase("package") || args[i + 1].equalsIgnoreCase("install")) {
                     goal = args[i + 1];
+                }
+
+            } else if (args[i].equalsIgnoreCase("--dir") || args[i].equalsIgnoreCase("-d")) {
+                if (args.length > i + 1) {
+                    dir = Paths.get(args[i + 1]);
                 }
             }
         }
@@ -73,14 +79,14 @@ public class MavenBootstrapper {
             }
         }
 
-        if (!new File("pom.xml").exists()) {
-            System.out.println("No project to build found.");
+        if (!Files.exists(Paths.get(dir.toString(), "pom.xml"))) {
+            System.out.println("No project to build found in working directory " + dir.toString() + ".");
             return;
         }
 
         System.out.println("Building project...");
-        String[] arguments = {bin.toString() + File.separatorChar + getMvnScript(), "clean", goal};
-        Process process = new ProcessBuilder(arguments).start();
+        String[] arguments = {bin.toAbsolutePath().toString() + File.separatorChar + getMvnScript(), "clean", goal};
+        Process process = new ProcessBuilder(arguments).directory(dir.toFile()).start();
         BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
         String line = reader.readLine();
         while (line != null) {
